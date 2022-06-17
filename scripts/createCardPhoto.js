@@ -1,6 +1,22 @@
 import { createElem } from "./createElem.js"
 
-export const createCardPhoto = data => {
+const loadImg = (url, description) => {
+    return new Promise((resolve, reject) => {
+        const img = new Image()
+        img.width = 200
+        img.src = url
+        img.alt = description
+        img.addEventListener('load', () => {
+            resolve(img)
+        })
+
+        img.addEventListener('error', (err) => {
+            reject(new Error(err))
+        })
+    })
+}
+
+export const createCardPhoto = async (data) => {
     const card = createElem('li', {
         className: 'card',
     })
@@ -10,12 +26,8 @@ export const createCardPhoto = data => {
         className: 'grid-item',
         href: `page.html?photo=${data.id}`,
     })
-    
 
-    const photo = new Image()
-    photo.width = '200'
-    photo.src = data.urls.small
-    photo.alt = data.alt_description
+    const photo = await loadImg(data.urls.small, data.alt_description)
 
     const author = createElem('a', {
         href: data.user.links.html,
