@@ -27,20 +27,21 @@ export const createCardPhoto = async (data) => {
         href: `page.html?photo=${data.id}`,
     })
 
-    const photo = await loadImg(data.urls.small, data.alt_description)
+    const photo = await loadImg(data.urls.small, data.alt_description || data.description)
 
     const author = createElem('a', {
         href: data.user.links.html,
         className: 'card__author',
     })
 
-    const avatarAuthor = new Image()
-    avatarAuthor.className = 'author__photo'
-    avatarAuthor.src = data.user.profile_image.medium
-    avatarAuthor.alt = data.user.bio
-    avatarAuthor.width = '32'
-    avatarAuthor.height = '32'
-    avatarAuthor.title = data.user.username
+    const avatarAuthor = createElem('img', {
+        className: 'author__photo',
+        src: data.user.profile_image.medium,
+        alt: data.user.bio,
+        width: '32',
+        height: '32',
+        title: data.user.username,
+    })
 
     author.append(avatarAuthor)
 

@@ -8,17 +8,21 @@ const init = async ({selectorGalleryWrapper, selectorPhotoWrapper}) => {
 
 
     if (galleryWrapper) {
-        const photos = await getData('data.json')
+        const photos = await getData({
+            count: 30
+        })
         renderGallery(galleryWrapper, photos)
     }
 
     if (photoWrapper) {
         const url = new URL(location.href)
 
-        console.log(url.searchParams.get('photo'))
+        const idPhoto = url.searchParams.get('photo')
 
-        const photo = await getData('photo.json')
-        renderPhoto(photoWrapper, photo)
+        if (idPhoto) {
+            const photo = await getData({idPhoto})
+            renderPhoto(photoWrapper, photo)
+        }
     }
 }
 
